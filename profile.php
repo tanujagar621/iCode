@@ -17,10 +17,7 @@ function test_input($data) {
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 
     <title>iCode - Online coding Forum</title>
 </head>
@@ -30,6 +27,11 @@ function test_input($data) {
     <div style="min-height: 85vh;" class="container">
         <div class="username">
             <?php
+            // if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true)
+            // {
+            //     if($id == $_SESSION['id'])
+            //     header("location: selfProfile.php");
+            // }
             $sql = "select * from `users` where `User_id` = '$id'";
             $result = mysqli_query($con, $sql);
             $row = mysqli_fetch_assoc($result);
@@ -39,7 +41,7 @@ function test_input($data) {
                 <p class="lead"></p>
                 <hr class="my-4">
                 <p></p>
-                <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+                <a class="btn btn-success btn-lg" href="#" role="button">Learn more</a>
                 </div>
                 <div class="questions">
                 <h2>Questions Posted:</h2>';

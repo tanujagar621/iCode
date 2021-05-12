@@ -34,7 +34,7 @@ echo '<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                     <a class="nav-link" href="contact.php" tabindex="-1">Contact</a>
                 </li>
             </ul>
-            <div class="mx-2 row">
+            <div class="mx-2 row  position-relative">
             <form class="form-inline my-2 my-lg-0  method="get" action="/forum/search.php">
                     <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
@@ -42,8 +42,14 @@ echo '<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true)
             {
                 echo '
-                    <p class="text-light my-0 mx-4">Welcome '.$_SESSION['email'].'</p>
-                    <a href="components/_logout.php" class="btn btn-outline-success ml-2" ">LogOut</a>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Welcome '.$_SESSION['email'].'
+                    </a>
+                    <div class="dropdown-menu bg-dark dropdown-menu-right" style="min-width=25rem;" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item text-light"  href="selfProfile.php">Profile</a>
+                        <a class="dropdown-item text-light" href="components/_logout.php">LogOut</a>
+                    </div>
                 </form>';
             }
             else

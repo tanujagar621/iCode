@@ -20,11 +20,7 @@ function test_input($data) {
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="style.css">
     <title>iCode - <?php echo $name; ?></title>
 </head>
 
@@ -124,9 +120,9 @@ function test_input($data) {
                     echo '<div class="media my-3 align-items-center">
                             <img src="img/userdefault.jpg" height=75px class="mr-3" alt="...">
                             <div class="media-body my-3">
-                                <p class="font-weight-bold my-0">'.$thread_user_name.' at '.$thread_time.'</p>
-                                <h5 class="mt-0"><a href="thread.php?threadid='.$thread_id.'&category='.$name.'"> '.$title.'</a> </h5>
-                                '.$thread_desc.'
+                            <h5 class="mt-0"><a href="thread.php?threadid='.$thread_id.'&category='.$name.'"> '.$title.'</a> </h5>
+                            '.$thread_desc.'
+                            <p class="font-weight-bold my-0"><a href="profile.php?id='.$thread_user_id.'">'.$thread_user_name.'</a> at '.$thread_time.'</p>
                             </div>
                         </div>';
                 }
