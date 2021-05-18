@@ -13,9 +13,9 @@ echo "
       <form action='/forum/components/_handleLogin.php' method='POST'>
         <div class='modal-body'>
           <div class='form-group'>
-          <label for='email '>email</label>
-          <input type='text' class='form-control' name='email' id='email' aria-describedby='emailHelp'
-          placeholder='email'>
+          <label for='username '>username</label>
+          <input type='text' class='form-control' name='username' id='username' aria-describedby='usernameHelp'
+          placeholder='username'>
         </div>
         <div class='form-group '>
           <label for='password'>Password</label>

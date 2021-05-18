@@ -9,10 +9,10 @@ function test_input($data) {
     if($_SERVER['REQUEST_METHOD'] == 'POST')
     {
         require "_dbconnect.php";
-        $email = test_input($_POST['email']);
+        $username = test_input($_POST['username']);
         $pass = test_input($_POST['password']);
         $cpass = test_input($_POST['cpassword']);
-        $existsql = "SELECT * FROM `users` WHERE `User_email` = '$email'";
+        $existsql = "SELECT * FROM `users` WHERE `User_username` = '$username'";
         $result = mysqli_query($con, $existsql);
         $num = mysqli_num_rows($result);
     if($num == 0)
@@ -20,7 +20,7 @@ function test_input($data) {
         if($pass == $cpass)
         {
             $hash = password_hash($pass, PASSWORD_DEFAULT);
-            $sql = "INSERT INTO `users`(`User_email`, `User_password`, `Date`) VALUES ('$email','$hash',current_timestamp())";
+            $sql = "INSERT INTO `users`(`User_username`, `User_password`, `Date`) VALUES ('$username','$hash',current_timestamp())";
             $result = mysqli_query($con, $sql);
             if($result)
             {
@@ -36,7 +36,7 @@ function test_input($data) {
     }
     else
     {
-        $showErr = "Email already in use!";
+        $showErr = "username already in use!";
     }
     header("location: /forum/index.php?signup=false&error=$showErr");
 }

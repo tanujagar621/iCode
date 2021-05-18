@@ -20,7 +20,9 @@ function test_input($data) {
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>iCode - <?php echo $name; ?></title>
 </head>
 
@@ -77,8 +79,8 @@ function test_input($data) {
             <form action="'.htmlspecialchars($_SERVER["REQUEST_URI"]).'" method="POST">
         <div class="mb-3">
             <label for="title" class="form-label">Problem Title</label>
-            <input type="text" name="title" class="form-control" id="title" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">Keep your title short and to the point</div>
+            <input type="text" name="title" class="form-control" id="title" aria-describedby="usernameHelp">
+            <div id="usernameHelp" class="form-text">Keep your title short and to the point</div>
         </div>
         <div class="mb-3">
             <label for="desc" class="form-label">Problem Description</label>
@@ -116,7 +118,7 @@ function test_input($data) {
                     $sql2 = "SELECT * FROM `users` WHERE `User_id` = $thread_user_id";
                     $userresult = mysqli_query($con, $sql2);
                     $row2 = mysqli_fetch_assoc($userresult);
-                    $thread_user_name = $row2['User_email'];
+                    $thread_user_name = $row2['User_username'];
                     echo '<div class="media my-3 align-items-center">
                             <img src="img/userdefault.jpg" height=75px class="mr-3" alt="...">
                             <div class="media-body my-3">
@@ -138,19 +140,6 @@ function test_input($data) {
             ?>
 
 
-
-
-
-            <!-- <div class="media">
-            <img src="img/userdefault.jpg" width=60px class="mr-3" alt="...">
-            <div class="media-body my-3">
-                <h5 class="mt-0">unable to user math function</h5>
-                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras
-                purus
-                odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate
-                fringilla. Donec lacinia congue felis in faucibus.
-            </div>
-        </div> -->
         </div>
     </div>
 

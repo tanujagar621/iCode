@@ -12,25 +12,24 @@ echo "
       </div>
       <form action='/forum/components/_handleSignup.php' method='POST'>
         <div class='modal-body'>
-            <div class='form-group'>
-        <label for='email '>email</label>
-        <input type='text' maxlength='25' class='form-control' name='email' id='email'
-          aria-describedby='emailHelp' placeholder='email'>
-      </div>
-      <div class='form-group '>
-        <label for='password'>Password</label>
-        <input type='password' maxlength='15' class='form-control' name='password' id='password' placeholder='Password'>
-      </div>
-      <div class='form-group '>
-        <label for='cpassword'>Confirm Password</label>
-        <input type='password' maxlength='15' class='form-control' name='cpassword' id='cpassword'
-          placeholder='Confirm Password'>
-        <small id='emailHelp' class='form-text text-muted'>Make sure to type the same password</small>
+          <div class='form-group'>
+            <label for='username '>UserName</label>
+            <input type='text' maxlength='25' class='form-control' name='username' id='username'
+              aria-describedby='usernameHelp' placeholder='username'>
+          </div>
+          <div class='form-group '>
+            <label for='password'>Password</label>
+            <input type='password' maxlength='15' class='form-control' name='password' id='password' placeholder='Password'>
+          </div>
+          <div class='form-group '>
+            <label for='cpassword'>Confirm Password</label>
+            <input type='password' maxlength='15' class='form-control' name='cpassword' id='cpassword'
+              placeholder='Confirm Password'>
+            <small id='usernameHelp' class='form-text text-muted'>Make sure to type the same password</small>
+          </div>
+          <button type='submit' class='btn btn-primary'>SignUp</button>
         </div>
-            <button type='submit' class='btn btn-primary'>SignUp</button>
-        </div>
-        </div>
-        </form>
+      </form>
       <div class='modal-footer'>
         <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
       </div>

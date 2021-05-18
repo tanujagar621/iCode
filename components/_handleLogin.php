@@ -8,9 +8,9 @@ function test_input($data) {
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
     require "_dbconnect.php";
-    $email = test_input($_POST['email']);
+    $username = test_input($_POST['username']);
     $pass = test_input($_POST['password']);
-    $sql = "SELECT * FROM `users` WHERE `User_email` = '$email'";
+    $sql = "SELECT * FROM `users` WHERE `User_username` = '$username'";
     $result = mysqli_query($con, $sql);
     $num = mysqli_num_rows($result);
     if($num == 1)
@@ -21,8 +21,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             session_start();
             $_SESSION['loggedin'] = true;
             $_SESSION['id'] = $row['User_id'];
-            $_SESSION['email'] = $email;
-            // echo "passed". $email;
+            $_SESSION['username'] = $username;
+            // echo "passed". $username;
             header("location: /forum/index.php?login=true");
             exit();
         }

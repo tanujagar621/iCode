@@ -1,6 +1,5 @@
 <?php
 require "components/_dbconnect.php";
-
 function test_input($data) {
     $data = trim($data);
     $data = stripslashes($data);
@@ -17,26 +16,42 @@ function test_input($data) {
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <title>iCode - Online coding Forum</title>
 </head>
 
 <body>
-    <?php require "components/_nav.php";?>
     <?php
+    // session_start();
+    require "components/_nav.php";
+    if(isset($_SESSION['loggedin']) == false || $_SESSION['loggedin'] != true)
+    {
+    echo '
+    <div class="container my-5 ">
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading display-3">Warning!</h4>
+            <p class="display-4">Your requested page not found!!!</p>
+            <hr>
+        </div>
+    </div>
+    ';
+    exit;
+    }
     $id = $_SESSION['id'];
     $showAlert = false;
     $showErr = false;
     if($_SERVER['REQUEST_METHOD'] == 'POST')
     {
         $username = $_POST['username'];
-        $sql = "select * from `users` where `User_email` = '$username'";
+        $sql = "select * from `users` where `User_username` = '$username'";
         $result = mysqli_query($con, $sql);
         $num = mysqli_num_rows($result);
         if($num == 0)
         {
-            $sql = "update `users` set `User_email` = '$username' where `User_id` = '$id'";
+            $sql = "update `users` set `User_username` = '$username' where `User_id` = '$id'";
             $result = mysqli_query($con, $sql);
             if($result)
             {
@@ -83,7 +98,7 @@ function test_input($data) {
                     <form action='selfProfile.php' method='post'>
                         <div class='mb-3'>
                             <label for='username' class='form-label'>Enter New UserName</label>
-                            <input type='text' class='form-control' name='username' id='username' aria-describedby='emailHelp'>
+                            <input type='text' class='form-control' name='username' id='username' aria-describedby='usernameHelp'>
                         </div>
                         <button type='submit' class='btn btn-primary'>Submit</button>
                     </form>
@@ -96,15 +111,23 @@ function test_input($data) {
             </div>
             </div>"
     ?>
+    <style>
+    .profilePic {
+        border-radius: 50%;
+        height: 250px;
+        width: 250px;
+    }
+    </style>
     <div style="min-height: 85vh;" class="container">
         <div class="username">
             <?php
             $sql = "select * from `users` where `User_id` = '$id'";
             $result = mysqli_query($con, $sql);
             $row = mysqli_fetch_assoc($result);
-            $email = $row['User_email'];
+            $username = $row['User_username'];
             echo '<div class="jumbotron">
-                <h1 class="display-4">'. $email .'</h1>
+                <img src="img/userdefault.jpg" class="profilePic" alt="">
+                <h1 class="display-4">'. $username .'</h1>
                 <p class="lead"></p>
                 <hr class="my-4">
                 <p></p>
@@ -164,6 +187,8 @@ function test_input($data) {
                     '.$content.'
                     <p class="font-weight-bold my-0">At '.$comm_time.'</p>
                     </div>
+                    <a href="thread.php?threadid='.$row['Thread_id'].'&category='.$row1['Category_Name'].'" class="btn btn-success">Go to
+                        thread</a>
                     </div>';
                 }
                 if($noresult)

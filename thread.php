@@ -18,7 +18,7 @@ function test_input($data) {
         $sql = "select * from `users` where `User_id` = $thread_user_id";
         $result1 = mysqli_query($con, $sql);
         $row1 = mysqli_fetch_assoc($result1);
-        $thread_user_name = $row1['User_email'];
+        $thread_user_name = $row1['User_username'];
     }
 ?>
 <!doctype html>
@@ -28,8 +28,12 @@ function test_input($data) {
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="style.css">
-    <title>iCode - <?php echo $title .' '. $cat_name; ?> </title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>iCode -
+        <?php echo $title .' '. $cat_name; ?>
+    </title>
 </head>
 
 <body>
@@ -58,10 +62,16 @@ function test_input($data) {
     ?>
     <div class="container">
         <div class="jumbotron">
-            <h1 class="display-4"><?php echo $title; ?></h1>
-            <p class="lead"><?php echo $desc; ?></p>
+            <h1 class="display-4">
+                <?php echo $title; ?>
+            </h1>
+            <p class="lead">
+                <?php echo $desc; ?>
+            </p>
             <hr class="my-4">
-            <p><b>Posted By: <?php echo $thread_user_name; ?></b></p>
+            <p><b>Posted By: <a href="profile.php?id=<?php echo $thread_user_id;?>">
+                        <?php echo $thread_user_name; ?>
+                    </a></b></p>
             <p>No Spam / Advertising / Self-promote in the forums. ...
                 Do not post copyright-infringing material. ...
                 Do not post “offensive” posts, links or images. ...
@@ -107,7 +117,7 @@ function test_input($data) {
                     $sql2 = "SELECT * FROM `users` WHERE `User_id` = $comment_user_id";
                     $userresult = mysqli_query($con, $sql2);
                     $row2 = mysqli_fetch_assoc($userresult);
-                    $comment_user_name = $row2['User_email'];
+                    $comment_user_name = $row2['User_username'];
                     echo '<div class="media my-3 align-items-center">
                     <img src="img/userdefault.jpg" width=60px class="mr-3" alt="...">
                     <div class="media-body my-3">

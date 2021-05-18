@@ -1,5 +1,8 @@
 <?php
 $id = $_GET['id'];
+// session_start();
+if(isset($_SESSION['id']) && $id == $_SESSION['id'])
+header("location: selfprofile.php");
 require "components/_dbconnect.php";
 function test_input($data) {
     $data = trim($data);
@@ -17,9 +20,17 @@ function test_input($data) {
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="style.css">
-
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>iCode - Online coding Forum</title>
+    <style>
+    .profilePic {
+        border-radius: 50%;
+        height: 250px;
+        width: 250px;
+    }
+    </style>
 </head>
 
 <body>
@@ -35,9 +46,10 @@ function test_input($data) {
             $sql = "select * from `users` where `User_id` = '$id'";
             $result = mysqli_query($con, $sql);
             $row = mysqli_fetch_assoc($result);
-            $email = $row['User_email'];
+            $username = $row['User_username'];
             echo '<div class="jumbotron">
-                <h1 class="display-4">'. $email .'</h1>
+            <img src="img/userdefault.jpg" class="profilePic" alt="">
+                <h1 class="display-4">'. $username .'</h1>
                 <p class="lead"></p>
                 <hr class="my-4">
                 <p></p>
@@ -86,16 +98,25 @@ function test_input($data) {
                 while($row = mysqli_fetch_assoc($result))
                 {
                     $noresult = false;
-                     $comm_id = $row['Comment_id'];
+                    $comm_id = $row['Comment_id'];
                     // $title = $row['Thread_title'];
                     $content = $row['Comment_content'];
                     $comm_time = $row['Comment_time'];
+                    $thread_id = $row['Thread_id'];
+                    $sql1 = "select * from `threads` where `Thread_id` = '$thread_id'";
+                    $result1 = mysqli_query($con, $sql1);
+                    $row1 = mysqli_fetch_assoc($result1);
+                    $cat_id = $row1['Thread_cat_id'];
+                    $sql1 = "select * from `categories` where `Category_id` = '$cat_id'";
+                    $result1 = mysqli_query($con, $sql1);
+                    $row1 = mysqli_fetch_assoc($result1);
                     echo '<div class="media my-3 align-items-center">
                     <img src="img/userdefault.jpg" width=60px class="mr-3" alt="...">
                     <div class="media-body my-3">
                     '.$content.'
                     <p class="font-weight-bold my-0">At '.$comm_time.'</p>
                     </div>
+                    <a href="thread.php?threadid='.$row['Thread_id'].'&category='.$row1['Category_Name'].'" class="btn btn-success">Go to thread</a>
                     </div>';
                 }
                 if($noresult)

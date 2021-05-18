@@ -44,7 +44,7 @@ echo '<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 echo '
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Welcome '.$_SESSION['email'].'
+                        Welcome '.$_SESSION['username'].'
                     </a>
                     <div class="dropdown-menu bg-dark dropdown-menu-right" style="min-width=25rem;" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item text-light"  href="selfProfile.php">Profile</a>
