@@ -37,27 +37,109 @@ function test_input($data) {
 </head>
 
 <body>
-    <?php require "components/_nav.php";?>
-    <?php 
-        $showAlert = false;
-        if($_SERVER['REQUEST_METHOD'] == 'POST')
+    <?php require "components/_nav.php";
+    if(isset($_GET['edit']))
+    {
+        $editid = $_GET['edit'];
+        $sql = "select * from `comments` where `Comment_id` = $editid";
+        $result = mysqli_query($con, $sql);
+        $row = mysqli_fetch_assoc($result);
+        echo '<div class="container my-3">
+        <h1 class="py2">Edit Comment</h1>
+        <form action="thread.php?threadid='.$id.'&category='.$cat_name.'&editid='.$editid.'" method="POST">
+        <div class="mb-3">
+            <label for="content" class="form-label">Edit your comment</label>
+            <textarea class="form-control" name="content" id="content" rows="3">'.$row['Comment_content'].'</textarea>
+            <input type="hidden" name="user_id" value="'.$_SESSION['id'].'">
+        </div>
+        <button type="submit" class="btn btn-success">Post</button>
+        </form>';
+    }
+    if(isset($_GET['deleteid']))
+    {
+        if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true)
         {
-            $comm_content = test_input($_POST['content']);
-            $user_id = test_input($_POST['user_id']);
-            $sql = "INSERT INTO `comments` (`Comment_content`, `Thread_id`,  `Comment_by`, `Comment_time`) VALUES ('$comm_content', '$id', '$user_id' , current_timestamp());";
-            $result = mysqli_query($con, $sql);
-            if($result)
+            $delete = $_GET['deleteid'];
+            $deleteuserid = $_GET['user'];
+            if($_SESSION['id'] == $deleteuserid)
             {
-                $showAlert = true;
+                $sql1 = "DELETE FROM `comments` WHERE `Comment_id`='$delete'";
+                $result1 = mysqli_query($con, $sql1);
+                if($result) {
+                    echo '
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Success!</strong> Your comment has been deleted successfully.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>';
+                }
+            }
+            else
+            {
                 echo '
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Success!</strong> Your question has been posted successfully.
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error!</strong> Invalid request !!
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>';
             }
+        }
+        else{
+            echo '
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error!</strong> Invalid request !!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>';
+        }
+    }
+    ?>
+    <?php 
+        $showAlert = false;
+        if(isset($_GET['editid']))
+        {    if($_SERVER['REQUEST_METHOD'] == 'POST')
+            {
+                $comm_content = test_input($_POST['content']);
+                // $sql = "UPDATE `threads` SET `Thread_title`='$th_title',`Thread_desc`='$th_desc',`DateTime`=current_timestamp() WHERE `Thread_id`= '$_GET['edit']'";
+                $sql = "UPDATE `comments` SET `Comment_content`='$comm_content' WHERE `Comment_id`= {$_GET['editid']};";
+                $result = mysqli_query($con, $sql);
+                if($result)
+                {
+                    $showAlert = true;
+                    echo '
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Success!</strong> Your comment has been updated successfully.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>';
+                }
+            }
+        }
+        else
+        {    
+            if($_SERVER['REQUEST_METHOD'] == 'POST')
+            {
+                $comm_content = test_input($_POST['content']);
+                $user_id = test_input($_POST['user_id']);
+                $sql = "INSERT INTO `comments` (`Comment_content`, `Thread_id`,  `Comment_by`, `Comment_time`) VALUES ('$comm_content', '$id', '$user_id' , current_timestamp());";
+                $result = mysqli_query($con, $sql);
+                if($result)
+                {
+                    $showAlert = true;
+                    echo '
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Success!</strong> Your question has been posted successfully.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>';
+                }
 
+            }
         }
     ?>
     <div class="container">
@@ -93,6 +175,7 @@ function test_input($data) {
                 </div>
                 <button type="submit" class="btn btn-success">Post</button>
                 </form>';
+
             }
             else
             {
@@ -109,7 +192,7 @@ function test_input($data) {
                 while($row = mysqli_fetch_assoc($result))
                 {
                     $noresult = false;
-                     $comm_id = $row['Comment_id'];
+                    $comm_id = $row['Comment_id'];
                     // $title = $row['Thread_title'];
                     $content = $row['Comment_content'];
                     $comm_time = $row['Comment_time'];
@@ -123,8 +206,14 @@ function test_input($data) {
                     <div class="media-body my-3">
                     <p class="font-weight-bold my-0"><a href="profile.php?id='.$comment_user_id.'">'.$comment_user_name.'</a> at '.$comm_time.'</p>
                     '.$content.'
-                    </div>
                     </div>';
+                    if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true)
+                    {
+                        if($comment_user_id == $_SESSION['id'])
+                        echo '<a href="thread.php?threadid='.$id.'&category='.$cat_name.'&deleteid='.$comm_id.'&user='.$comment_user_id.'" class="btn btn-secondary">Delete</a>
+                        <a href="thread.php?threadid='.$id.'&category='.$cat_name.'&edit='.$comm_id.'" class="btn btn-secondary mx-2">Edit</a>';
+                    }
+                    echo '</div>';
                 }
                 if($noresult)
                 {

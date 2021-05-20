@@ -98,7 +98,7 @@ function test_input($data) {
                     <form action='selfProfile.php' method='post'>
                         <div class='mb-3'>
                             <label for='username' class='form-label'>Enter New UserName</label>
-                            <input type='text' class='form-control' name='username' id='username' aria-describedby='usernameHelp'>
+                            <input type='text' value=".$_SESSION['username']." class='form-control' name='username' id='username' aria-describedby='usernameHelp'>
                         </div>
                         <button type='submit' class='btn btn-primary'>Submit</button>
                     </form>
@@ -127,7 +127,7 @@ function test_input($data) {
             $username = $row['User_username'];
             echo '<div class="jumbotron">
                 <img src="img/userdefault.jpg" class="profilePic" alt="">
-                <h1 class="display-4">'. $username .'</h1>
+                <h3>'. $username .'</h3>
                 <p class="lead"></p>
                 <hr class="my-4">
                 <p></p>

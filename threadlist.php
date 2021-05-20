@@ -27,29 +27,96 @@ function test_input($data) {
 </head>
 
 <body>
-    <?php require "components/_nav.php";?>
-
-    <?php 
-        $showAlert = false;
-        if($_SERVER['REQUEST_METHOD'] == 'POST')
+    <?php require "components/_nav.php";
+    include "editThread.php";
+    if(isset($_GET['deleteid']))
+    {
+        if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true)
         {
-            $th_title = test_input($_POST['title']);
-            $th_desc = test_input($_POST['desc']);
-            $thread_user_id = test_input($_POST['thread_user_id']);
-            $sql = "INSERT INTO `threads` (`Thread_title`, `Thread_desc`, `Thread_cat_id`, `Thread_user_id`, `DateTime`) VALUES ('$th_title', '$th_desc', '$id', '$thread_user_id', current_timestamp());";
-            $result = mysqli_query($con, $sql);
-            if($result)
+            $delete = $_GET['deleteid'];
+            $deleteuserid = $_GET['user'];
+            if($_SESSION['id'] == $deleteuserid)
             {
-                $showAlert = true;
+                $sql1 = "DELETE FROM `threads` WHERE `thread_id`='$delete'";
+                $result1 = mysqli_query($con, $sql1);
+                if($result) {
+                    echo '
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Success!</strong> Your thread has been deleted successfully.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>';
+                }
+            }
+            else
+            {
                 echo '
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Success!</strong> Your question has been posted successfully.
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error!</strong> Invalid request !!
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>';
             }
+        }
+        else{
+            echo '
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error!</strong> Invalid request !!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>';
+        }
+    }
+    ?>
 
+    <?php 
+        $showAlert = false;
+        if(isset($_GET['editid']))
+        {    if($_SERVER['REQUEST_METHOD'] == 'POST')
+            {
+                $th_title = test_input($_POST['title']);
+                $th_desc = test_input($_POST['desc']);
+                // $sql = "UPDATE `threads` SET `Thread_title`='$th_title',`Thread_desc`='$th_desc',`DateTime`=current_timestamp() WHERE `Thread_id`= '$_GET['edit']'";
+                $sql = "UPDATE `threads` SET `Thread_title`='$th_title',`Thread_desc`='$th_desc' WHERE `Thread_id`= {$_GET['editid']};";
+                $result = mysqli_query($con, $sql);
+                if($result)
+                {
+                    $showAlert = true;
+                    echo '
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Success!</strong> Your question has been updated successfully.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>';
+                }
+            }
+        }
+        else
+        {    
+            $showAlert = false;
+            if($_SERVER['REQUEST_METHOD'] == 'POST')
+            {
+                $th_title = test_input($_POST['title']);
+                $th_desc = test_input($_POST['desc']);
+                $thread_user_id = test_input($_POST['thread_user_id']);
+                $sql = "INSERT INTO `threads` (`Thread_title`, `Thread_desc`, `Thread_cat_id`, `Thread_user_id`, `DateTime`) VALUES ('$th_title', '$th_desc', '$id', '$thread_user_id', current_timestamp());";
+                $result = mysqli_query($con, $sql);
+                if($result)
+                {
+                    $showAlert = true;
+                    echo '
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Success!</strong> Your question has been posted successfully.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>';
+                }
+            }
         }
     ?>
     <div class="container">
@@ -99,7 +166,6 @@ function test_input($data) {
 </div>';
     }
     ?>
-
         <div style="min-height: 40vh" class="container">
             <h1 class="py-2">Browse Questions</h1>
 
@@ -120,13 +186,22 @@ function test_input($data) {
                     $row2 = mysqli_fetch_assoc($userresult);
                     $thread_user_name = $row2['User_username'];
                     echo '<div class="media my-3 align-items-center">
-                            <img src="img/userdefault.jpg" height=75px class="mr-3" alt="...">
-                            <div class="media-body my-3">
-                            <h5 class="mt-0"><a href="thread.php?threadid='.$thread_id.'&category='.$name.'"> '.$title.'</a> </h5>
-                            '.$thread_desc.'
-                            <p class="font-weight-bold my-0"><a href="profile.php?id='.$thread_user_id.'">'.$thread_user_name.'</a> at '.$thread_time.'</p>
-                            </div>
+                        <img src="img/userdefault.jpg" height=75px class="mr-3" alt="...">
+                        <div class="media-body my-3">
+                        <h5 class="mt-0"><a href="thread.php?threadid='.$thread_id.'&category='.$name.'"> '.$title.'</a> </h5>
+                        '.$thread_desc.'
+                        <p class="font-weight-bold my-0"><a href="profile.php?id='.$thread_user_id.'">'.$thread_user_name.'</a> at '.$thread_time.'</p>
                         </div>';
+                    if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true)
+                    {
+                        if($thread_user_id == $_SESSION['id'])
+                        {
+                            echo '<a href="threadlist.php?catid='.$id.'&deleteid='.$thread_id.'&user='.$thread_user_id.'" class="btn btn-secondary">Delete</a>
+                            <a href="threadlist.php?catid='.$id.'&edit='.$thread_id.'" class="btn btn-secondary mx-2">Edit</a>
+                            ';
+                        }
+                    }
+                    echo '</div>';
                 }
                 if($noresult)
                 {
@@ -138,8 +213,6 @@ function test_input($data) {
                     </div>';
                 }
             ?>
-
-
         </div>
     </div>
 
