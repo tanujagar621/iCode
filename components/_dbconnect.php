@@ -2,7 +2,7 @@
     $server = "localhost";
     $username = "root";
     $password = "";
-    $database = "temp";
+    $database = "icode";
     $con = mysqli_connect($server, $username, $password, $database);
     if(!$con)
     {
